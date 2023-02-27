@@ -3,8 +3,7 @@ Title: Creating Ggplot Data Viz in the Style of NPC Research
 Version: 0.0.0.9000
 Authors@R: 
     person("Emily", "Katz", , "katz@npcresearch.com", role = c("aut", "cre"))
-Description: Helps NPC Research Staff members easily and consistently create ggplot 
-data visualizations in the style of NPC Research.
+Description: Helps NPC Research Staff members easily and consistently create ggplot data visualizations in the style of NPC Research.
 Imports:
   tidyverse
 License: MIT + file LICENSE

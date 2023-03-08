@@ -51,16 +51,16 @@ string = strsplit(file_path, "/")
 root = string[[1]][length(string[[1]])]
 string = string[[1]][-length(string[[1]])]
 
-exclude = c(
-  "template_files",
-  "lib",
-  "renv",
-  "renv.lock",
-  "archived",
-  "BeST.Rproj",
-  "template.html",
-  "README.html",
-  "template.pdf")
+# exclude = c(
+#   "template_files",
+#   "lib",
+#   "renv",
+#   "renv.lock",
+#   "archived",
+#   "BeST.Rproj",
+#   "template.html",
+#   "README.html",
+#   "template.pdf")
 
 
 # excluding files that clutter the tree

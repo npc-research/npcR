@@ -94,7 +94,7 @@ gitc = function(files = TRUE, beep = TRUE){
 
   if(list.files(path = "C:\\Users")[7] == "tadjiki"){
 
-  source("R/projects.R")
+  source("C:/Users/tadjiki/Documents/npcR/R/projects.R")
 
   project_file_path =
     projects %>%

@@ -1,4 +1,3 @@
-gitc = function(files = TRUE, beep = TRUE){
   #' @title Git Commit *NPC Style*
   #' @description Automatically commits and updates any changes you have saved to the pdrive and git hub repository. You will be asked to enter your commit message into the consol and press Enter.
   #'
@@ -12,6 +11,10 @@ gitc = function(files = TRUE, beep = TRUE){
   #'
   #' > gitc("cleaning_data.R")
   #' > finished joining tc data sets
+  #'
+  #' @export
+
+gitc = function(files = TRUE, beep = TRUE){
 
   if (!require("pacman")) install.packages("pacman")
   # if (!require("libgit2")) install.packages("libgit2")

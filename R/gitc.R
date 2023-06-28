@@ -68,6 +68,7 @@ gitc = function(files = TRUE, beep = TRUE){
 
   commit_message <- readline("Enter commit message: ")
 
+
   if(is.logical(files) & all(files==TRUE)){
     git_add(git_status()$file) # this stages every file with changes made and saved
   }else{
@@ -94,7 +95,7 @@ gitc = function(files = TRUE, beep = TRUE){
 
   if(list.files(path = "C:\\Users")[7] == "tadjiki"){
 
-  source("C:/Users/tadjiki/Documents/npcR/R/projects.R")
+  source("C:/Users/tadjiki/Documents/projects.R")
 
   project_file_path =
     projects %>%

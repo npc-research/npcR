@@ -29,27 +29,19 @@ tree = function(
   exclude,
   collapse
   ){
+
 if (!require("pacman")) install.packages("pacman")
 pacman::p_load(
-plyr,
-data.tree,
-collapsibleTree,
-tidyverse,
-htmltools,
-dplyr,
-docstring)
+  plyr,
+  data.tree,
+  collapsibleTree,
+  tidyverse,
+  htmltools,
+  dplyr,
+  docstring
+  )
 
 # source(other.R)
-
-path = list.files(file_path, full.names = TRUE, recursive = TRUE)
-df = lapply(strsplit(path, "/"), function(z) as.data.frame(t(z)))
-df = rbind.fill(df)
-df$pathString <- apply(df, 1, function(df) paste(trimws(na.omit(df)), collapse="/"))
-
-# finding what root should be
-string = strsplit(file_path, "/")
-root = string[[1]][length(string[[1]])]
-string = string[[1]][-length(string[[1]])]
 
 # exclude = c(
 #   "template_files",
@@ -61,6 +53,17 @@ string = string[[1]][-length(string[[1]])]
 #   "template.html",
 #   "README.html",
 #   "template.pdf")
+file_path = "C:/Users/tadjiki/Documents/Root"
+exclude = c("Data","Archive")
+
+files_listed = list.files(file_path, full.names = TRUE, recursive = TRUE)
+df = lapply(strsplit(files_listed, "/"), function(z) as.data.frame(t(z))) %>%
+  rbind.fill()
+df$pathString <- apply(df, 1, function(df) paste(trimws(na.omit(df)), collapse="/"))
+
+# finding what root should be
+n_unnecessary_par_dir = strsplit(file_path, "/")[[1]] %>% length()
+root = strsplit(file_path, "/")[[1]][n_unnecessary_par_dir]
 
 
 # excluding files that clutter the tree
@@ -69,56 +72,88 @@ if(missing(exclude)) { # making this argument optional
 } else {
 files_excluded = exclude
 
-df = df %>%
-filter(if_any(
-  .cols = 1,
-  .fns = ~ !. %in% files_excluded))
+df <- df %>%
+  filter(if_all(
+    .cols = everything(),
+    .fns = ~ !. %in% files_excluded
+  ))
+
 }
 
 
 df %<>%
-  select((length(string)+2):ncol(df)) %>%
-  filter(!grepl("\\~\\$", pathString))
+  select((n_unnecessary_par_dir+1):ncol(df)) %>%
+  # filter(!grepl("\\~\\$", pathString)) %>%
+  mutate(is_directory = FALSE)
+
+
+directories =
+  lapply(strsplit(list.dirs(file_path)[-1], "/"), function(z) as.data.frame(t(z))) %>%
+  plyr::rbind.fill() %>%
+  select(n_unnecessary_par_dir:nrow(df)) %>%
+  select(-1) %>%
+  lapply(., unique) %>%
+  unlist() %>%
+  na.omit() %>%
+  as.vector() %>%
+  data.frame(directory = .)
+
+color_table = directories %>%
+  cbind(
+    matrix(
+      NA,
+      nrow = nrow(directories),
+      ncol = ncol(df)-3),
+    file_path = list.dirs(file_path)[-1],
+    dir = TRUE
+    ) %>%
+  rename_with(~ names(df), everything()) %>%
+  rbind(.,df) %>%
+  arrange(pathString)
+
+
 
 # adding color to nodes
-# color_vec = 1:nrow(df)
-# i = 21
-#
-# adding_color = function(i){
-#   pathString_split = strsplit(df$pathString[i], "/")
-#   file_name = pathString_split[[1]][length(pathString_split[[1]])]
-#   removed_periods = strsplit(file_name, "//.")
-#   file_type = removed_periods[[1]][length(removed_periods[[1]])]
-#
-#   if(file_type == "Rmd"){result = "#ef6232"
-#   }else if(file_type == "R"||file_type =="sps"){result = "#4b729d"
-#
-#   # data files
-#   }else if(
-#     file_type == "xlsx"
-#     ||file_type =="csv"
-#     ||file_type =="sav"){result = "#1c5b34"
-#   }else if(file_type == "spv"){result = "lightblue"
-#   }else if(file_type == "docx"){result = "darkblue"
-#   }else if(file_type == "png"||file_type =="jpeg"){result = "purple"
-#   }else if(file_type == "html"||file_type =="MD"){result = "red"
-#   }else if(file_type == "pdf"){result = "#AE3535"
-#   }else if(file_type == "RHistory"){result = "gray"
-#   }else if(file_type == "RData"){result = "#7cb494"
-#   }else if(file_type == "gitignore"){result = "#B96C37"
-#     # else if(file_type == ""){""}
-#   # else if(file_type == ""){""}
-#   }else{result = "black"}
-#
-#   color_vec[i] = result
-#
-# }
-#
-# rm(i);sapply(1:nrow(df), adding_color)
-#
-# color_vec = sapply(1:nrow(df), adding_color)
-#
-#
+color_vec = 1:nrow(color_table)
+i = 4
+
+adding_color = function(i){
+  pathString_split = strsplit(color_table$pathString[i], "/")
+  file_name = pathString_split[[1]][length(pathString_split[[1]])]
+  removed_periods = strsplit(file_name, "\\.")
+  file_type = removed_periods[[1]][length(removed_periods[[1]])]
+
+  if(color_table$is_directory[i]) {result = "yellow"
+  }else if(file_type == "Rmd"){result = "#ef6232"
+  }else if(file_type == "R"||file_type =="sps"){result = "#4b729d"
+
+  # data files
+  }else if(
+    file_type == "xlsx"
+    ||file_type =="csv"
+    ||file_type =="sav"){result = "#1c5b34"
+  }else if(file_type == "spv"){result = "lightblue"
+  }else if(file_type == "docx"){result = "darkblue"
+  }else if(file_type == "png"||file_type =="jpeg"){result = "purple"
+  }else if(file_type == "html"||file_type =="MD"){result = "red"
+  }else if(file_type == "pdf"){result = "#AE3535"
+  }else if(file_type == "RHistory"){result = "gray"
+  }else if(file_type == "RData"){result = "#7cb494"
+  }else if(file_type == "gitignore"){result = "#B96C37"
+    # else if(file_type == ""){""}
+  # else if(file_type == ""){""}
+  }else{result = "black"}
+
+  color_vec[i] = result
+
+}
+
+rm(i)
+sapply(1:nrow(color_table), adding_color)
+
+color_vec = sapply(1:nrow(color_table), adding_color)
+
+
 # color_vec = c(
 #   rep("yellow", 15),
 #   "pink",
@@ -131,15 +166,25 @@ if(missing(collapse)) { # making this argument optional
   collapse = TRUE
   } else{collapse = FALSE}
 
-tree_output = df %>%
+tree_output = color_table %>%
   # Traverse(.,traversal = "post-order") %>% view()
-  select(-pathString) %>%
+  select(-pathString,-is_directory) %>%
   collapsibleTree(
     hierarchy = names(.),
     root = root,
     attribute = "leafCount",
     # aggFun = sum,
     # fill = color_vec,
+    # fill = c(color_vec,rep(
+    #   c(
+    #     "red",
+    #     "orange",
+    #     "yellow",
+    #     "blue",
+    #     # "green",
+    #     "purple"
+    #   )
+    #   ,1)),
     fillByLevel = TRUE,
     linkLength = NULL,
     fontSize = 12,
@@ -151,6 +196,7 @@ tree_output = df %>%
     height = 1000
   )
 
+tree_output
 return(tree_output)
 }
 
@@ -205,3 +251,4 @@ return(tree_output)
 # tree$height
 
 
+tree("P:/6. Projects Active/CMC Care Link", exclude = "Data", collapse = TRUE)

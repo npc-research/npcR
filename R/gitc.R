@@ -21,8 +21,6 @@ gitc = function(files = TRUE, beep = TRUE){
   library(pacman)
   p_load(flextable,tidyverse,beepr,gert)
 
-  # files = c(".gitignore","R/gitc.R")
-
   users = list.files(path = "C:\\Users")
 
   users = users[!(users %in% c(

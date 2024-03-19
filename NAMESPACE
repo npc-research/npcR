@@ -2,4 +2,5 @@
 
 export(gitc)
 export(npc_style)
+export(read_airtable)
 export(tree)

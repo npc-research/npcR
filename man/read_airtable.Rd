@@ -12,7 +12,7 @@ read_airtable(table, base = "Assessment Tracker")
 \item{base}{A class of "string" that is the AirTable Base with my table located in it.}
 }
 \value{
-Air Table table
+AirTable table
 }
 \description{
 Function for reading in Air Table tables

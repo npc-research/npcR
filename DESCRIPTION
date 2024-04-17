@@ -5,7 +5,12 @@ Authors@R:
     person("Cyrus", "Tadjiki", , "tadjiki@npcresearch.com", role = c("aut", "cre"))
 Description: Functions for styling and workflow at NPC Research.
 Imports:
-  tidyverse
+  tidyverse,
+  plyr,
+  data.tree,
+  collapsibleTree,
+  htmltools,
+  dplyr
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)

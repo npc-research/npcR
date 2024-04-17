@@ -6,7 +6,7 @@ tree = function(
   #' recommended to use forward slashes in between files. Two back slashes
   #' is also an option.
   #' @param exclude list of files you wish to exclude from the tree.
-  #' @param expand if FALSE, entire tree is expanded, Default is TRUE.
+  #' @param collapse if FALSE, entire tree is collapsed, Default is TRUE.
   #'
   #' @return Returns interactive html file
   #'
@@ -22,7 +22,7 @@ tree = function(
   #' tree(
   #'   file_path = "P:/6. Projects Active/Example/Data",
   #'   exclude = c("data.csv", "data.sav"),
-  #'   expand = TRUE)
+  #'   collapse = TRUE)
   #'
   #' @export
   file_path,
@@ -30,16 +30,14 @@ tree = function(
   collapse
   ){
 
-if (!require("pacman")) install.packages("pacman")
-pacman::p_load(
-  plyr,
-  data.tree,
-  collapsibleTree,
-  tidyverse,
-  htmltools,
-  dplyr,
-  docstring
-  )
+# if (!require("pacman")) install.packages("pacman")
+# pacman::p_load(
+#   plyr,
+#   data.tree,
+#   collapsibleTree,
+#   htmltools,
+#   dplyr
+#   )
 
 # source(other.R)
 
@@ -53,6 +51,8 @@ pacman::p_load(
 #   "template.html",
 #   "README.html",
 #   "template.pdf")
+
+# TODO comment out lines below
 file_path = "C:/Users/tadjiki/Documents/Root"
 exclude = c("Data","Archive")
 

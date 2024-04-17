@@ -58,7 +58,7 @@ exclude = c("Data","Archive")
 
 files_listed = list.files(file_path, full.names = TRUE, recursive = TRUE)
 df = lapply(strsplit(files_listed, "/"), function(z) as.data.frame(t(z))) %>%
-  rbind.fill()
+  plyr::rbind.fill()
 df$pathString <- apply(df, 1, function(df) paste(trimws(na.omit(df)), collapse="/"))
 
 # finding what root should be

@@ -10,7 +10,8 @@ Imports:
   data.tree,
   collapsibleTree,
   htmltools,
-  dplyr
+  dplyr,
+  httr
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)

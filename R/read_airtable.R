@@ -49,8 +49,8 @@ read_airtable = function(table,base = "Assessment Tracker"){
   while(offset_flag == TRUE) {
 
     response <- httr::GET(api_url, add_headers("Authorization" = paste("Bearer", Sys.getenv("at_pa_tkn")))) # get the raw data
-    content <- httr::content(response, as = "text")
-    raw_data = jsonlite::fromJSON(content)
+    response <- httr::content(response, as = "text")
+    raw_data = jsonlite::fromJSON(response)
 
     # making list of cols that are not in this offsets data that need to be for rbind correctly
     add_cols_local = setdiff(

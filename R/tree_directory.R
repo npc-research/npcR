@@ -84,7 +84,7 @@ df <- df %>%
 df %<>%
   select((n_unnecessary_par_dir+1):ncol(df)) %>%
   # filter(!grepl("\\~\\$", pathString)) %>%
-  mutate(is_directory = FALSE)
+  dplyr::mutate(is_directory = FALSE)
 
 
 directories =
@@ -107,7 +107,7 @@ color_table = directories %>%
     file_path = list.dirs(file_path)[-1],
     dir = TRUE
     ) %>%
-  rename_with(~ names(df), everything()) %>%
+  dplyr::rename_with(~ names(df), everything()) %>%
   rbind(.,df) %>%
   arrange(pathString)
 
@@ -209,7 +209,7 @@ return(tree_output)
 #
 #
 # tree = df %>%
-#   mutate(pathString = str_remove(pathString, "")) %>%
+#   dplyr::mutate(pathString = str_remove(pathString, "")) %>%
 #   data.tree::as.Node()
 #
 # get_value_by_folder <- function(tree) {

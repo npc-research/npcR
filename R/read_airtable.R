@@ -48,7 +48,7 @@ read_airtable = function(table,base = "Assessment Tracker"){
   # This means the function keeps going only while whatever is in parentheses is true
   while(offset_flag == TRUE) {
 
-    response <- httr::GET(api_url, add_headers("Authorization" = paste("Bearer", Sys.getenv("at_pa_tkn")))) # get the raw data
+    response <- httr::GET(api_url, httr::add_headers("Authorization" = paste("Bearer", Sys.getenv("at_pa_tkn")))) # get the raw data
     response <- httr::content(response, as = "text")
     raw_data = jsonlite::fromJSON(response)
 
@@ -67,10 +67,10 @@ read_airtable = function(table,base = "Assessment Tracker"){
     data =
       raw_data$records %>%
       unnest(cols = everything()) %>%
-      bind_cols(set_names(map(add_cols_local, ~ NA), add_cols_local)) %>%
+      bind_cols(set_names(purrr::map(add_cols_local, ~ NA), add_cols_local)) %>%
       rbind(
         # adding cols that aren't in previous offsets for this data that need to be to rbind
-        data %>% bind_cols(set_names(map(add_cols_global, ~ NA), add_cols_global)),
+        data %>% bind_cols(set_names(purrr::map(add_cols_global, ~ NA), add_cols_global)),
         .
       )
 

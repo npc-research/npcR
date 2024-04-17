@@ -18,7 +18,7 @@ delete_all_airtable_records <- function(table,base) {
   base_id  = at_ids$base_id
   table_id = at_ids$table_id
 
-  ids_to_remove = read_airtable(table=table,base=base) %>% pull(id)
+  ids_to_remove = npcR::read_airtable(table=table,base=base) %>% pull(id)
 
   sapply(ids_to_remove, function(record_id){
 
@@ -27,7 +27,7 @@ delete_all_airtable_records <- function(table,base) {
     # Make the DELETE request to delete records
     response <- DELETE(
       record_url,
-      add_headers("Authorization" = paste("Bearer", Sys.getenv("at_pa_tkn"))),
+      httr::add_headers("Authorization" = paste("Bearer", Sys.getenv("at_pa_tkn"))),
       encode = "json"
       )
     }

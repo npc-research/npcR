@@ -107,7 +107,7 @@ create_airtable_rows <- function(data,table,base,
 
     response <- POST(
       paste("https://api.airtable.com/v0", base_id, table_id, sep = "/"),
-      add_headers("Authorization" = paste("Bearer", Sys.getenv("at_pa_tkn"))),
+      httr::add_headers("Authorization" = paste("Bearer", Sys.getenv("at_pa_tkn"))),
       body = upload_file("data/post_request.json"),
       encode = "json",
       timeout(20)

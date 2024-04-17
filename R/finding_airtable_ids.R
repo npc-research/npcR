@@ -15,22 +15,22 @@ finding_airtable_ids <- function(table,base = "Assessment Tracker") {
   }
 
   bases = "https://api.airtable.com/v0/meta/bases" %>%
-    GET(., add_headers("Authorization" = paste("Bearer", Sys.getenv("at_pa_tkn")))) %>%
-    content(., "text") %>%
+    httr::GET(., httr::add_headers("Authorization" = paste("Bearer", Sys.getenv("at_pa_tkn")))) %>%
+    httr::content(., "text") %>%
     jsonlite::fromJSON() %>%
     data.frame() %>%
-    rename_with(~gsub("^bases\\.", "", .), everything()) %>%
-    mutate(table_data = map(id, ~{
+    dplyr::rename_with(~gsub("^bases\\.", "", .), everything()) %>%
+    dplyr::mutate(table_data = purrr::map(id, ~{
       base_id <- .
       paste0(
         "https://api.airtable.com/v0/meta/bases/",
         base_id,
         "/tables") %>%
-        GET(., add_headers("Authorization" = paste("Bearer", Sys.getenv("at_pa_tkn")))) %>%
-        content(., "text") %>%
+        httr::GET(., httr::add_headers("Authorization" = paste("Bearer", Sys.getenv("at_pa_tkn")))) %>%
+        httr::content(., "text") %>%
         jsonlite::fromJSON() %>%
         data.frame() %>%
-        rename_with(~gsub("^tables\\.", "", .), everything())
+        dplyr::rename_with(~gsub("^tables\\.", "", .), everything())
     })) %>%
     janitor::clean_names()
 

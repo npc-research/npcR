@@ -13,7 +13,7 @@ is also an option.}
 
 \item{exclude}{list of files you wish to exclude from the tree.}
 
-\item{expand}{if FALSE, entire tree is expanded, Default is TRUE.}
+\item{collapse}{if FALSE, entire tree is collapsed, Default is TRUE.}
 }
 \value{
 Returns interactive html file
@@ -28,7 +28,7 @@ tree("P:/6. Projects Active/Example", exclude = ".RData")
 tree(
   file_path = "P:/6. Projects Active/Example/Data",
   exclude = c("data.csv", "data.sav"),
-  expand = TRUE)
+  collapse = TRUE)
 
 }
 \references{

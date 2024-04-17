@@ -196,7 +196,7 @@ tree_output = color_table %>%
     height = 1000
   )
 
-tree_output
+# tree_output
 return(tree_output)
 }
 
@@ -251,4 +251,4 @@ return(tree_output)
 # tree$height
 
 
-tree("P:/6. Projects Active/CMC Care Link", exclude = "Data", collapse = TRUE)
+# tree("P:/6. Projects Active/CMC Care Link", exclude = "Data", collapse = TRUE)

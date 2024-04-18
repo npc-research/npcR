@@ -10,7 +10,6 @@ finding_airtable_ids <- function(table,base = "Assessment Tracker") {
   #' @examples
   #' finding_airtable_ids(table = "Logins",base = "Assessment Tracker")
 
-
   if (Sys.getenv("at_pa_tkn")=="") {
     stop("API key not found. Make sure you have your API key in a hidden variable named `at_pa_tkn` by running Sys.setenv(at_pa_tkn ='your_api_key_here').")
   }

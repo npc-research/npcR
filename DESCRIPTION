@@ -1,5 +1,5 @@
 Package: npcR
-Title: Creating Ggplot Data Viz in the Style of NPC Research
+Title: NPC's R Package
 Version: 0.0.0.9000
 Authors@R: 
     person("Cyrus", "Tadjiki", , "tadjiki@npcresearch.com", role = c("aut", "cre"))

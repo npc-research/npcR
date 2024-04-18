@@ -5,13 +5,11 @@ Authors@R:
     person("Cyrus", "Tadjiki", , "tadjiki@npcresearch.com", role = c("aut", "cre"))
 Description: Functions for styling and workflow at NPC Research.
 Imports:
-  knitr,
   tidyverse,
   purrr,
   plyr,
   data.tree,
   collapsibleTree,
-  gert,
   htmltools,
   dplyr,
   httr
@@ -19,7 +17,3 @@ License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.1
-Suggests: 
-    knitr,
-    rmarkdown
-VignetteBuilder: knitr

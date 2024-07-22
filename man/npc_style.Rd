@@ -50,3 +50,4 @@ car_plot + npc_style() +
   theme(plot.title = element_text(hjust = 0), # Left aligns the title
         plot.subtitle = element_text(hjust = 0)) # Left aligns the subtitle
 }
+\keyword{npc_style}

@@ -63,7 +63,16 @@ initialize_project <- function(mail_merge = TRUE) {
     template_file_path = inst_files$full_path[file]
 
     if (template_file_path != "") {
-      file.copy(template_file_path, overwrite = TRUE)
+      file.copy(
+        template_file_path,
+        if(str_detect(template_file_path,"api_keys")){
+          "api_keys/api_keys.R"
+        }else{ str_remove(
+          template_file_path,
+          system.file("templates/", package = "npcR")
+          ) %>% str_c("R",.) # FIXME make this more dynamic for no R file and non R directory
+            },
+        overwrite = TRUE)
       message(paste(inst_files$name[file], "has been copied."))
     } else {
       warning(paste(

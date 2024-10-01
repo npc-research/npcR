@@ -1,8 +1,10 @@
 Package: npcR
 Title: NPC's R Package
 Version: 0.0.0.9000
-Authors@R: 
-    person("Cyrus", "Tadjiki", , "tadjiki@npcresearch.com", role = c("aut", "cre"))
+Authors@R: c(
+    person("Cyrus", "Tadjiki", email = "tadjiki@npcresearch.com", role = c("aut", "cre")),
+    person("Emily", "Katzton", email = "ekatz323@gmail.com", role = c("aut"))
+    )
 Description: Functions for styling and workflow at NPC Research.
 Imports:
   tidyverse,

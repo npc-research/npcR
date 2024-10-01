@@ -1,4 +1,10 @@
 initialize_project <- function(mail_merge = TRUE) {
+#' initialize_project
+#'
+#' @param mail_merge a variable of class logical for specifying if we want a file names ./R/mail_merge.R
+#' @return directories and syntax written for specific files
+#' @export
+#'
   # 1. Create necessary directories
   directories <- c(
     "R",
@@ -64,5 +70,3 @@ initialize_project <- function(mail_merge = TRUE) {
 
   message("Project setup complete!")
 }
-
-

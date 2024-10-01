@@ -62,7 +62,7 @@ initialize_project <- function(mail_merge = TRUE) {
 
     template_file_path = inst_files$full_path[file]
 
-    if (template_path != "") {
+    if (template_file_path != "") {
       file.copy(template_file_path, overwrite = TRUE)
       message(paste(inst_files$name[file], "has been copied."))
     } else {

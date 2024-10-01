@@ -51,22 +51,30 @@ initialize_project <- function(mail_merge = TRUE) {
   # TODO have this code run for all files in inst/templates
   # TODO test this with ~/git_repos_cloned/GitHub-Help
 
-  tibble(
+  inst_files = tibble(
     full_path = system.file("templates/", package = "npcR") %>%
       dir(full.names = TRUE),
     name = system.file("templates/", package = "npcR") %>%
       dir()
   )
 
+  sapply(1:nrow(inst_files), function(file) {
 
-  template_path <- system.file("templates/loading_packages.R", package = "npcR")
+    template_file_path = inst_files$full_path[file]
 
-  if (template_path != "") {
-    file.copy(template_path, "R/loading_packages.R", overwrite = TRUE)
-    message("loading_packages.R has been copied.")
-  } else {
-    warning("Template loading_packages.R not found in package.")
+    if (template_path != "") {
+      file.copy(template_file_path, overwrite = TRUE)
+      message(paste(inst_files$name[file], "has been copied."))
+    } else {
+      warning(paste(
+        "Template for",
+        template_file_path,
+        "has not found in package.")
+        )
+    }
+
   }
+)
 
   message("Project setup complete!")
 }

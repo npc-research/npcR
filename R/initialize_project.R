@@ -8,9 +8,11 @@ initialize_project <- function(mail_merge = TRUE) {
   # 1. Create necessary directories and sub directories
   directories <- c(
     "R",
+    "R/archive",
     "docs",
     "images",
     "data",
+    "data/archive",
     "output",
     "links",
     "archive",
@@ -18,13 +20,6 @@ initialize_project <- function(mail_merge = TRUE) {
   )
 
   sapply(directories, dir.create)
-
-  sub_directories <- c(
-    "R/archive",
-    "data/archive"
-  )
-
-  sapply(sub_directories, dir.create)
 
   # 2. Create necessary R files (excluding loading_packages.R since it will be copied)
   r_files <- c("todor_setup")

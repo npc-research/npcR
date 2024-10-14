@@ -5,7 +5,7 @@ initialize_project <- function(mail_merge = TRUE) {
 #' @return directories and syntax written for specific files
 #' @export
 #'
-  # 1. Create necessary directories
+  # 1. Create necessary directories and sub directories
   directories <- c(
     "R",
     "docs",
@@ -13,10 +13,18 @@ initialize_project <- function(mail_merge = TRUE) {
     "data",
     "output",
     "links",
+    "archive",
     "api_keys"
   )
 
-  sapply(directories, dir.create, showWarnings = FALSE)
+  sapply(directories, dir.create)
+
+  sub_directories <- c(
+    "R/archive",
+    "data/archive"
+  )
+
+  sapply(sub_directories, dir.create)
 
   # 2. Create necessary R files (excluding loading_packages.R since it will be copied)
   r_files <- c("todor_setup")

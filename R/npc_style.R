@@ -51,19 +51,19 @@ npc_style <- function() {
     # Format text
     # This sets the font, size, and color for the chart's title
     plot.title = ggplot2::element_text(family = font,
-                                       size = 18,
+                                       # size = 18,
                                        face = "bold",
                                        color = npc_blue,
                                        hjust = 0.5),
     # This sets the font, size, and color for the chart's subtitle (if you have one)
     plot.subtitle = ggplot2::element_text(family = font,
-                                          size = 11,
+                                          # size = 11,
                                           color = npc_blue,
                                           margin = ggplot2::margin(5,0,5,0),
                                           hjust = 0.5),
     # This sets the font, size, color, and position of the chart's caption (if you have one)
     plot.caption = ggplot2::element_text(family = font,
-                                         size = 11,
+                                         # size = 11,
                                          color = npc_blue,
                                          margin = ggplot2::margin(5,0,0,0)),
 
@@ -76,14 +76,14 @@ npc_style <- function() {
     legend.key = ggplot2::element_blank(),
     legend.text = ggplot2::element_text(
       family = font,
-      size = 11,
+      # size = 11,
       color = npc_blue),
 
     # Axis format
     # This formats the axes (size, color, margins, removes lines and ticks - can always add back later)
     axis.title = ggplot2::element_blank(), # removes axis title (e.g., "island" and "n"), instead use subtitle, don't have to do this
     axis.text = ggplot2::element_text(family = font,
-                                      size = 11,
+                                      # size = 11,
                                       color = npc_blue),
     axis.ticks = ggplot2::element_blank(), # removes ticks
     axis.line = ggplot2::element_blank(), # removes axis lines
@@ -100,6 +100,7 @@ npc_style <- function() {
     # Multi-faceted charts background format
     # Removes standard gray background to white for when you're making small multiples + changes title text size for small multiples
     strip.background = ggplot2::element_rect(fill = "white"),
-    strip.text = ggplot2::element_text(size = 11,
-                                       hjust = 0))
+    strip.text = ggplot2::element_text(
+                          # size = 11,
+                          hjust = 0))
 }

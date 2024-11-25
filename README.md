@@ -1,14 +1,14 @@
 # npcR
 Functions for styling and workflow at NPC Research
 
-# Installing npcR
+## Installing npcR
 To install npcR, you must use `devtools`. If you don't already have `devtools` installed, do that first. If you already have `devtools` installed, simply load the library before running the second line of code. 
 
 ```R
 # install.packages("devtools")  
 devtools::install_github("npc-research/npcR")
 ```
-# Updating package
+## Updating package
 To update package, create R script here `./R` and run `devtools::document()` to create .Rd file and then commit changes to git.
 
 # Using AirTable functions

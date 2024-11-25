@@ -8,6 +8,9 @@ To install npcR, you must use `devtools`. If you don't already have `devtools` i
 # install.packages("devtools")  
 devtools::install_github("npc-research/npcR")
 ```
+# Updating package
+To update package, create R script here `./R` and run `devtools::document()` to create .Rd file and then commit changes to git.
+
 # Using AirTable functions
 To use any functions that interact with AirTable you will need to store your API Personal Access Tokens in a hidden environment named `at_pa_tkn`.
 ```

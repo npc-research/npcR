@@ -93,7 +93,7 @@ create_airtable_rows <- function(data,table,base,
     })
 
     formatted_data %>%
-      list(records = .) %>%
+      list(records = .,typecast = TRUE) %>%
       RJSONIO::toJSON(., auto_unbox = TRUE) %>%
       write("data/post_request.json")
 

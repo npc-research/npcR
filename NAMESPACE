@@ -2,6 +2,7 @@
 
 export(co)
 export(color_font_palette)
+export(concatenating_percentages)
 export(create_airtable_rows)
 export(delete_all_airtable_records)
 export(finding_airtable_ids)

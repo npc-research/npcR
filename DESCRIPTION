@@ -14,7 +14,9 @@ Imports:
   collapsibleTree,
   htmltools,
   dplyr,
-  httr
+  httr,
+  datapasta,
+  flextable
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)

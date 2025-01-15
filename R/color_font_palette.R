@@ -79,6 +79,13 @@ c = list(
       vertical.align = "superscript"
     ),
 
+    body_bold_format = fp_text(
+      color = c$font_color,
+      font.size = 12,
+      font.family = "Calibri",
+      bold = TRUE
+    ),
+
     body_italic_format = fp_text(
       color = c$font_color,
       font.size = 12,

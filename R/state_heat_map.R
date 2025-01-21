@@ -25,6 +25,11 @@ state_heat_map = function(state_data,legend_title = NULL){
 
   if(is.null(legend_title)) legend_title = "Number of programs"
 
+  state_abbrev = data.frame(
+    abbr = state.abb,
+    state = tolower(state.name)
+  )
+
   # Join state abbreviations to full state names
   state_data <- left_join(state_data, state_abbrev, by = c("state_abbr" = "abbr"))
 

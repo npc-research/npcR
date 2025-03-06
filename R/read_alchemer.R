@@ -193,12 +193,18 @@ Sys.time() %>% print()
 result <- lapply(
   1:nrow(surveys),
   function(i) {
-    (surveys %>%
+    output = (surveys %>%
        select(id) %>%
        pull())[i] %>%
-       appending_survey_data() %>%
-       select(-survey_data,-url_variables)
+       appending_survey_data()
+
+    if(!is.null(output)) {
+      output %>%
+       select(-matches("survey_data"),-matches("url_variables")) %>%
+        return()
+    }
 })
+result = Filter(Negate(is.null), result)
 Sys.time() %>% print()
 
 # Combine the resulting data frames into a single data frame

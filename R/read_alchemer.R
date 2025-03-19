@@ -200,7 +200,7 @@ result <- lapply(
 
     if(!is.null(output)) {
       output %>%
-       select(-matches("survey_data"),-matches("url_variables")) %>%
+       select(-matches("survey_data"),-matches("url_variables"),-matches("data_quality")) %>%
         return()
     }
 })

@@ -34,6 +34,7 @@ create_airtable_rows <- function(data,table,base,
   #'      base = "Assessment Tracker",
   #'      single_select_fields = character(),
   #'      link_fields = character(),
+  #'      attachment_fields = character(),
   #'      first_row_i = row_indices[index,"first_row_i"],
   #'      last_row_i = row_indices[index,"last_row_i"])
   #'  }
@@ -49,7 +50,7 @@ create_airtable_rows <- function(data,table,base,
 
     data = data %>% slice(first_row_i:last_row_i)
 
-    format_fields <- function(data, single_select_fields = character(), link_fields = character()) {
+    format_fields <- function(data, single_select_fields = character(), link_fields = character(), attachment_fields = character()) {
       records <- lapply(1:nrow(data), function(i) {
         fields <- lapply(names(data), function(col) {
           if (col %in% single_select_fields) {
@@ -98,7 +99,8 @@ create_airtable_rows <- function(data,table,base,
         select(where(~ !any(is.na(.)))) %>% # dropping columns that have an NA in them
         format_fields(.,
                       single_select_fields = single_select_fields,
-                      link_fields = link_fields
+                      link_fields = link_fields,
+                      attachment_fields = attachment_fields
         )
 
     })

@@ -51,6 +51,7 @@ sapply(
      base = "Assessment Tracker",
      single_select_fields = character(),
      link_fields = character(),
+     attachment_fields = character(),
      first_row_i = row_indices[index,"first_row_i"],
      last_row_i = row_indices[index,"last_row_i"])
  }

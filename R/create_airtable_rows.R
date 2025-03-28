@@ -1,16 +1,18 @@
 create_airtable_rows <- function(data,table,base,
                                  single_select_fields = character(),
                                  link_fields = character(),
+                                 attachment_fields = character(),
                                  first_row_i,
                                  last_row_i
                                  ) {
   #' Function for Creating AirTable Rows
   #'
-  #' @param data A class of "string" that is the AirTable Base you are uploading data to.
+  #' @param data A class of "data.frame" that is the AirTable Base you are uploading data to.
   #' @param base A class of "string" that is the AirTable Base you are uploading data to.
-  #' @param table A class of "data.frame" that is the name of table I am wanting to upload to AirTable.
+  #' @param table A class of "string" that is the name of table I am wanting to upload to AirTable.
   #' @param single_select_fields A class of "character vector" that is a list of the single select columns.
   #' @param link_fields A class of "character vector" that is a list of the class "url" columns.
+  #' @param attachment_fields A class of "character vector" that is a list of the class "attachment" columns.
   #'
   #' @return HTTPs response on if the rows were uploaded successfully or not. Message 200 means that the rows were uploaded correctly.
   #' @export
@@ -43,6 +45,7 @@ create_airtable_rows <- function(data,table,base,
   # single_select_fields = c("Primary Language","Other Languages")
   # single_select_fields = character()
   # link_fields = c("Email Address","Work Phone")
+  # attachment_fields = c("Report","Assessment PDF")
 
     data = data %>% slice(first_row_i:last_row_i)
 
@@ -60,6 +63,14 @@ create_airtable_rows <- function(data,table,base,
           } else if (col %in% link_fields) {
 
             # For link columns, format value as a list containing a URL
+            if (!is.null(data[[col]][i])) {
+              setNames(list(list(list(url = data[[col]][i]))), col)
+            } else {
+              setNames(list(NULL), col)
+            }
+          } else if (col %in% attachment_fields) {
+
+            # For attachment columns, format value as a list containing a URL to an attachment
             if (!is.null(data[[col]][i])) {
               setNames(list(list(list(url = data[[col]][i]))), col)
             } else {

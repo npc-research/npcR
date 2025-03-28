@@ -10,20 +10,23 @@ create_airtable_rows(
   base,
   single_select_fields = character(),
   link_fields = character(),
+  attachment_fields = character(),
   first_row_i,
   last_row_i
 )
 }
 \arguments{
-\item{data}{A class of "string" that is the AirTable Base you are uploading data to.}
+\item{data}{A class of "data.frame" that is the AirTable Base you are uploading data to.}
 
-\item{table}{A class of "data.frame" that is the name of table I am wanting to upload to AirTable.}
+\item{table}{A class of "string" that is the name of table I am wanting to upload to AirTable.}
 
 \item{base}{A class of "string" that is the AirTable Base you are uploading data to.}
 
 \item{single_select_fields}{A class of "character vector" that is a list of the single select columns.}
 
 \item{link_fields}{A class of "character vector" that is a list of the class "url" columns.}
+
+\item{attachment_fields}{A class of "character vector" that is a list of the class "attachment" columns.}
 }
 \value{
 HTTPs response on if the rows were uploaded successfully or not. Message 200 means that the rows were uploaded correctly.

@@ -5,6 +5,7 @@ create_bookmarks_html <- function(urls, titles = NULL, file_path = NULL) {
   #' @param titles an optional variable of class character vector of what you would like your bookmarks to be named
   #' @param file_path an optional variable of class character that is a file path of where you want your html file to be saved to. Default is C:/Users/USER/Documents/bookmarks.html
   #' @return a saved file of an bookmarks as an html file you can upload to chrome
+  #' @export
   #' @examples
     #' urls = paste0("https://app.alchemer.com/explorer/export-summary/id/",10000:10001) # define surveys you want to open
     #' create_bookmarks_html(urls, titles = c("Survey 1", "Survey 2"), file_path = "P:\...surveys.html")

@@ -48,6 +48,10 @@ create_airtable_rows <- function(data,table,base,
   # link_fields = c("Email Address","Work Phone")
   # attachment_fields = c("Report","Assessment PDF")
 
+  if (Sys.getenv("at_pa_tkn")=="") {
+    stop("API key not found. Make sure you have your API key in a hidden variable named `at_pa_tkn` by running Sys.setenv(at_pa_tkn ='your_api_key_here').")
+  }
+
     data = data %>% slice(first_row_i:last_row_i)
 
     format_fields <- function(data, single_select_fields = character(), link_fields = character(), attachment_fields = character()) {

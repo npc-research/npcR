@@ -3,4 +3,5 @@
 .RData
 .Ruserdata
 hidden.R
+data
 inst/doc

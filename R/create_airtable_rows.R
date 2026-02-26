@@ -136,4 +136,6 @@ create_airtable_rows <- function(data,table,base,
 
     cat("Uploading records ",first_row_i," to ", last_row_i,"\n")
 
+    return(response)
+
 }

@@ -1,15 +1,13 @@
 update_airtable_records = function(data,fields,key,table,base = "Assessment Tracker",
                                    single_select_fields = character(),
                                    link_fields = character(),
-                                   attachment_fields = character(),
-                                   first_row_i,
-                                   last_row_i
+                                   attachment_fields = character()
                                    ){
   #' Function for Creating AirTable Rows
   #'
   #' @param data A class of "data.frame" that is the AirTable Base you are uploading data to.
   #' @param fields A class of "character vector" that is a list of the fields you are planning on updating.
-  #' @param key A class of "string" that is variable to join on and link data you're uplaoding, to data in AirTable.
+  #' @param key A class of "string" that is variable to join on and link data you're uploading, to data in AirTable.
   #' @param base A class of "string" that is the AirTable Base you are uploading data to.
   #' @param table A class of "string" that is the name of table I am wanting to upload to AirTable.
   #' @param single_select_fields A class of "character vector" that is a list of the single select columns.
@@ -21,41 +19,27 @@ update_airtable_records = function(data,fields,key,table,base = "Assessment Trac
   #'
   #' @examples
   #'
-  #' row_indices = data.frame(
-  #'  first_row_i = seq(1, nrow(df), 10),
-  #'  last_row_i  = c(seq(min(10, nrow(df)), nrow(df), 10),nrow(df))
+  #'create_airtable_rows(
+  #'  data = df,
+  #'  table = "Contact List",
+  #'  base = "Assessment Tracker",
+  #'  single_select_fields = character(),
+  #'  link_fields = character(),
+  #'  attachment_fields = character()
   #'  )
-  #'
-  #'Sys.sleep(30)
-  #'sapply(
-  #'  1:nrow(row_indices),
-  #'  function(index) {
-  #'    create_airtable_rows(
-  #'      data = df,
-  #'      table = "Contact List",
-  #'      base = "Assessment Tracker",
-  #'      single_select_fields = character(),
-  #'      link_fields = character(),
-  #'      attachment_fields = character(),
-  #'      first_row_i = row_indices[index,"first_row_i"],
-  #'      last_row_i = row_indices[index,"last_row_i"])
-  #'  }
-  #')
 
   # data = data.frame(
   #   character_name = c("Cruella","Jasper","Horace"),
   #   name = c("Emma","Joel","Paul")
   #   # name = c("Emma Stone","Joel Fry","Paul Walter")
   # )
-  # table = "test updating"
-  # base = "Best Practices"
+  # table = "Table 5"
+  # base = "Zapier Test"
+  # key = "id"
+  # fields = c("HTTP Error")
   # key = "character_name"
-  # fields = c("name")
-  # first_row_i = 131
-  # last_row_i = 140
-  # single_select_fields = c("Primary Language","Other Languages")
   # single_select_fields = character()
-  # link_fields = c("Email Address","Work Phone")
+  # link_fields = c("Resource Link")
   # attachment_fields = c("Report","Assessment PDF")
 
   if (Sys.getenv("at_pa_tkn")=="") {
@@ -65,8 +49,8 @@ update_airtable_records = function(data,fields,key,table,base = "Assessment Trac
   airtable_data = npcR::read_airtable(table=table,base=base)
 
   df_all = airtable_data %>%
-    left_join(
-      data %>% select(matches(fields)),
+    right_join(
+      data %>% select(id,matches(fields)),
       suffix = c(".airtable", ".upload_data"),
       by = key)
 
@@ -155,8 +139,24 @@ update_airtable_records = function(data,fields,key,table,base = "Assessment Trac
 
   data <- finalize_overwrites(df_all, fields)
 
+  # making table that recognizes how to upload rows in batches of 10
+  first_row_indices = seq(1, nrow(data), 10)
+  last_row_indices = c(first_row_indices[-length(first_row_indices)]+9,nrow(data))
+
+  row_indices = data.frame(
+    first_row_i = first_row_indices,
+    last_row_i  = last_row_indices
+  )
+
   # uploading data
-  data = data %>% slice(first_row_i:last_row_i)
+  sapply(
+    1:nrow(row_indices),
+    function(index) {
+
+    first_row_i = row_indices[index,"first_row_i"]
+    last_row_i = row_indices[index,"last_row_i"]
+
+    data = data %>% slice(first_row_i:last_row_i)
 
   format_fields_patch <- function(data, id_column = "id", single_select_fields = character(), link_fields = character(), attachment_fields = character()) {
     records <- lapply(1:nrow(data), function(i) {
@@ -229,9 +229,9 @@ update_airtable_records = function(data,fields,key,table,base = "Assessment Trac
   )
 
   Sys.sleep(1)
-
   http_status(response)$message %>% print()
-
   cat("Uploading records ",first_row_i," to ", last_row_i,"\n")
 
+    }
+  ) # end of sapply
 }

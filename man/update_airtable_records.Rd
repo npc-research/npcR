@@ -12,9 +12,7 @@ update_airtable_records(
   base = "Assessment Tracker",
   single_select_fields = character(),
   link_fields = character(),
-  attachment_fields = character(),
-  first_row_i,
-  last_row_i
+  attachment_fields = character()
 )
 }
 \arguments{
@@ -22,7 +20,7 @@ update_airtable_records(
 
 \item{fields}{A class of "character vector" that is a list of the fields you are planning on updating.}
 
-\item{key}{A class of "string" that is variable to join on and link data you're uplaoding, to data in AirTable.}
+\item{key}{A class of "string" that is variable to join on and link data you're uploading, to data in AirTable.}
 
 \item{table}{A class of "string" that is the name of table I am wanting to upload to AirTable.}
 
@@ -42,24 +40,12 @@ Function for Creating AirTable Rows
 }
 \examples{
 
-row_indices = data.frame(
- first_row_i = seq(1, nrow(df), 10),
- last_row_i  = c(seq(min(10, nrow(df)), nrow(df), 10),nrow(df))
+create_airtable_rows(
+ data = df,
+ table = "Contact List",
+ base = "Assessment Tracker",
+ single_select_fields = character(),
+ link_fields = character(),
+ attachment_fields = character()
  )
-
-Sys.sleep(30)
-sapply(
- 1:nrow(row_indices),
- function(index) {
-   create_airtable_rows(
-     data = df,
-     table = "Contact List",
-     base = "Assessment Tracker",
-     single_select_fields = character(),
-     link_fields = character(),
-     attachment_fields = character(),
-     first_row_i = row_indices[index,"first_row_i"],
-     last_row_i = row_indices[index,"last_row_i"])
- }
-)
 }

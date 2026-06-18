@@ -7,15 +7,87 @@ get_age_census_data = function(
     table_letter = "A",
     age_bins = NULL
 ){
-  #' Function finding Census Age Data for Counties in specified State
-  #' @param geography input to get_acs() function, "state", "county", "place", "tract"
-  #' @param table_number Census Table of data of interested
-  #' @param table_letter letter for which race you are collecting data on, see example for xwalk
+  #' Retrieve ACS age population estimates by geography and race
   #'
-  #' @return data.frame
-  #' @export
+  #' Retrieves American Community Survey (ACS) 5-year population estimates
+  #' from Census table B01001 and its race-specific variants (B01001A-I).
+  #' Results can be returned for states, counties, places, or census tracts
+  #' and optionally restricted to selected age groups.
+  #'
+  #' The function maps ACS table cells to age and sex categories using an
+  #' internal crosswalk derived from Census table B01001.
+  #'
+  #' @param geography Geographic level passed to
+  #'   \code{tidycensus::get_acs()}. Common values include
+  #'   \code{"state"}, \code{"county"}, \code{"place"}, and
+  #'   \code{"tract"}.
+  #' @param state_code Two-letter state abbreviation used by
+  #'   \code{tidycensus::get_acs()}.
+  #' @param counties Optional data frame containing a \code{GEOID} column.
+  #'   When \code{geography = "county"}, results are restricted to counties
+  #'   whose GEOIDs are present in this data frame.
+  #' @param census_year ACS year to retrieve. Defaults to the latest
+  #'   available annual ACS release.
+  #' @param table_number Census table identifier. Defaults to
+  #'   \code{"B01001"}.
+  #' @param table_letter Race-specific table suffix corresponding to Census
+  #'   tables B01001A-I.
+  #' @param age_bins Optional character vector of age categories to return.
+  #'   When \code{NULL}, only aggregate totals are returned.
+  #'
+  #' @details
+  #' Race-specific table letters are interpreted as:
+  #'
+  #' \itemize{
+  #'   \item A = White Alone
+  #'   \item B = Black or African American Alone
+  #'   \item C = American Indian and Alaska Native Alone
+  #'   \item D = Asian Alone
+  #'   \item E = Native Hawaiian and Other Pacific Islander Alone
+  #'   \item F = Some Other Race Alone
+  #'   \item G = Two or More Races
+  #'   \item H = White Alone, Not Hispanic or Latino
+  #'   \item I = Hispanic or Latino
+  #' }
+  #'
+  #' Returned data contains age group, sex, race, and estimated population
+  #' counts. Geography-specific name fields are renamed to
+  #' \code{state_name}, \code{county_name}, \code{place_name}, or
+  #' \code{tract_name} depending on the requested geography.
+  #'
+  #' @return A data frame containing:
+  #' \describe{
+  #'   \item{variable}{ACS variable identifier.}
+  #'   \item{population}{Estimated population count.}
+  #'   \item{age_bin}{Age category corresponding to the ACS table cell.}
+  #'   \item{sex}{Sex associated with the estimate.}
+  #'   \item{race}{Race category represented by the selected table letter.}
+  #'   \item{*_name}{Geography-specific name column.}
+  #' }
   #'
   #' @examples
+  #' \dontrun{
+  #' age_bins <- c(
+  #'   "18 and 19 years",
+  #'   "20 to 24 years",
+  #'   "25 to 29 years",
+  #'   "30 to 34 years",
+  #'   "35 to 44 years",
+  #'   "45 to 54 years",
+  #'   "55 to 64 years"
+  #' )
+  #'
+  #' get_age_census_data(
+  #'   geography = "county",
+  #'   state_code = "OR",
+  #'   table_letter = "A",
+  #'   age_bins = age_bins
+  #' )
+  #'
+  #' age_populations <- dplyr::bind_rows(
+  #'   get_age_census_data("county", "OR", table_letter = "A", age_bins = age_bins),
+  #'   get_age_census_data("county", "OR", table_letter = "B", age_bins = age_bins)
+  #' )
   #' age_populations = rbind(
   #'  get_age_census_data(table_letter = "A", age_bins = age_bins), # White Alone
   #'  get_age_census_data(table_letter = "B", age_bins = age_bins), # Black or African American Alone
@@ -27,7 +99,10 @@ get_age_census_data = function(
   #'  get_age_census_data(table_letter = "H", age_bins = age_bins), # White Alone, Not Hispanic or Latino
   #'  get_age_census_data(table_letter = "I", age_bins = age_bins)  # Hispanic or Latino
   #' )
-
+  #'
+  #' }
+  #'
+  #' @export
 
   # age_bins = c(
   #   "18 and 19 years",
@@ -75,13 +150,13 @@ get_age_census_data = function(
   )
 
 
-if (is.null(age_bins)) {
-  age_sex_xwalk <- age_sex_xwalk %>%
-    filter(is.na(age_bin))
-} else {
-  age_sex_xwalk <- age_sex_xwalk %>%
-    filter(age_bin %in% age_bins)
-}
+  if (is.null(age_bins)) {
+    age_sex_xwalk <- age_sex_xwalk %>%
+      filter(is.na(age_bin))
+  } else {
+    age_sex_xwalk <- age_sex_xwalk %>%
+      filter(age_bin %in% age_bins)
+  }
 
   if(is.null(census_year)) census_year = latest_acs_year(frequency = "annually")
 

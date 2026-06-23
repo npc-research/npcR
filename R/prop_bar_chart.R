@@ -1,3 +1,36 @@
+
+#' Create a horizontal proportion bar chart
+#'
+#' Creates a horizontal bar chart for displaying one or more
+#' proportions. Each bar is drawn against a reference bar
+#' representing 100 percent and labeled directly with its
+#' percentage value.
+#'
+#' @param plot_data Data frame containing the variables to plot.
+#'
+#' @details
+#' The input data must contain:
+#'
+#' \describe{
+#'   \item{group}{Category label displayed on the y-axis.}
+#'   \item{value}{Proportion value between 0 and 1.}
+#' }
+#'
+#' Labels are placed inside the bar when the value is at least
+#' 50 percent and outside the bar otherwise.
+#'
+#' @return
+#' A \code{ggplot2} object.
+#'
+#' @examples
+#' df <- data.frame(
+#'   group = c("White", "Black", "Asian"),
+#'   value = c(0.62, 0.12, 0.18)
+#' )
+#'
+#' prop_bar_chart(df)
+#'
+#' @export
 prop_bar_chart = function(plot_data){
 
   ggplot(plot_data, aes(x = value, y = group)) +

@@ -1,3 +1,69 @@
+#' Retrieve demographic and economic profile metrics for a geography
+#'
+#' Creates a profile dataset using ACS 5-year estimates and Decennial
+#' Census data. The resulting dataset includes population, unemployment,
+#' poverty, housing value, sex composition, race composition, and
+#' urban/rural population characteristics.
+#'
+#' @param state_code Two-letter state abbreviation.
+#' @param geography_type Geographic level to retrieve. Common values
+#'   include \code{"county"}, \code{"place"}, \code{"tract"}, and
+#'   \code{"state"}.
+#' @param census_year ACS year to retrieve. Defaults to the most recent
+#'   available ACS release.
+#'
+#' @details
+#' ACS estimates are obtained from the American Community Survey 5-year
+#' dataset and combined with urban and rural population measures from
+#' the most recent Decennial Census Detailed Housing Characteristics
+#' (DHC) summary file.
+#'
+#' Derived metrics include:
+#'
+#' \itemize{
+#'   \item Unemployment rate
+#'   \item Poverty rate
+#'   \item Proportion male
+#'   \item Race proportions
+#'   \item Urban population percentage
+#'   \item Rural population percentage
+#' }
+#'
+#' @return A data frame containing one row per geography with:
+#'
+#' \describe{
+#'   \item{GEOID}{Census geographic identifier}
+#'   \item{NAME}{Geographic name}
+#'   \item{geography}{Requested geography level}
+#'   \item{total_pop}{Total population}
+#'   \item{unemployment_rate}{Unemployed labor force proportion}
+#'   \item{median_home_value}{Median owner-occupied home value}
+#'   \item{poverty_rate}{Population below poverty level proportion}
+#'   \item{proportion_male}{Male share of population}
+#'   \item{prop_white}{White alone population proportion}
+#'   \item{prop_black}{Black population proportion}
+#'   \item{prop_native}{American Indian/Alaska Native proportion}
+#'   \item{prop_asian}{Asian population proportion}
+#'   \item{prop_pacific}{Native Hawaiian/Pacific Islander proportion}
+#'   \item{prop_other}{Other race proportion}
+#'   \item{prop_multi}{Two or more races proportion}
+#'   \item{urban_pct}{Urban population proportion}
+#'   \item{rural_pct}{Rural population proportion}
+#' }
+#'
+#' @examples
+#' \dontrun{
+#' county_profiles <- get_county_profile(
+#'   state_code = "OR"
+#' )
+#'
+#' place_profiles <- get_county_profile(
+#'   state_code = "OR",
+#'   geography_type = "place"
+#' )
+#' }
+#'
+#' @export
 get_county_profile <- function(state_code, geography_type = "county",census_year = NULL) {
 
   if(is.null(census_year)) census_year = latest_acs_year(frequency = "annually")

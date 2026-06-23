@@ -1,3 +1,55 @@
+#' Create a population pyramid plot
+#'
+#' Creates a population pyramid displaying male and female population
+#' counts by age group for a selected geography.
+#'
+#' The input data is expected to contain sex-specific population
+#' estimates by age group, such as output from
+#' \code{get_age_census_data()}.
+#'
+#' @param geo_name Character string identifying the geography to plot.
+#'   Must match a value in the \code{name} column of
+#'   \code{pyramid_df}.
+#' @param pyramid_df Data frame containing age-specific population
+#'   estimates.
+#' @param size_mult Numeric scaling factor applied to plot text and
+#'   annotation sizes. Default is \code{1}.
+#'
+#' @details
+#' Male populations are displayed to the right of the center axis and
+#' female populations are displayed to the left. Age categories are
+#' displayed along a central label column.
+#'
+#' Required columns in \code{pyramid_df}:
+#'
+#' \describe{
+#'   \item{name}{Geographic name}
+#'   \item{age_bin}{Age-group label}
+#'   \item{sex}{Male or Female}
+#'   \item{population}{Population estimate}
+#' }
+#'
+#' Population values are aggregated within age group and sex prior to
+#' plotting.
+#'
+#' @return
+#' A \code{ggplot2} / \code{patchwork} plot object.
+#'
+#' @examples
+#' \dontrun{
+#' age_data <- get_age_census_data(
+#'   geography = "county",
+#'   state_code = "OR",
+#'   age_bins = age_bin_xwalk$age_bins
+#' )
+#'
+#' population_pyramid_plot(
+#'   geo_name = "Multnomah",
+#'   pyramid_df = age_data
+#' )
+#' }
+#'
+#' @export
 population_pyramid_plot = function(geo_name, pyramid_df, size_mult = 1){
 
   age_bin_xwalk = data.frame(

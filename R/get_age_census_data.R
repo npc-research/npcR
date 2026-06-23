@@ -1,12 +1,3 @@
-get_age_census_data = function(
-    geography = "county",
-    state_code,
-    counties = NULL,
-    census_year = NULL,
-    table_number = "B01001",
-    table_letter = "A",
-    age_bins = NULL
-){
   #' Retrieve ACS age population estimates by geography and race
   #'
   #' Retrieves American Community Survey (ACS) 5-year population estimates
@@ -103,6 +94,15 @@ get_age_census_data = function(
   #' }
   #'
   #' @export
+get_age_census_data = function(
+    geography = "county",
+    state_code,
+    counties = NULL,
+    census_year = NULL,
+    table_number = "B01001",
+    table_letter = "A",
+    age_bins = NULL
+){
 
   # age_bins = c(
   #   "18 and 19 years",

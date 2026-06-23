@@ -153,7 +153,10 @@ population_pyramid_plot = function(geo_name, pyramid_df, size_mult = 1){
       scale_x_continuous(
         limits = x_limits,
         breaks = pretty(x_limits, n = 3),
-        labels = function(x) percent(accuracy = 1, scale = 0.001, abs(x)),
+        # labels = function(x) percent(accuracy = 1, scale = 0.001, abs(x)),
+        labels = function(x) {
+          ifelse(x == 0, "", scales::comma(abs(x), scale = 0.001, suffix = "K"))
+        }
       ) +
       coord_cartesian(clip = "off") +
       theme(

@@ -1,8 +1,3 @@
-read_alchemer = function(
-    survey_ids = 7589884,
-    end_date = Sys.Date(),
-    start_date = Sys.Date() - days(14)
-    ){
 #' Reading Alchemer Data
 #'
 #' @param survey_ids argument of class character vector. If bp_surveys is false you must enter a character in this argument on which survey ID numbers you are interested in loading data for.
@@ -10,10 +5,15 @@ read_alchemer = function(
 #' @param start_date argument of class string, that should be specified as a date for when you want to extract survey data
 #'
 #' @return data frame of selected survey's survey responses with survey name start date, submit date, reference number and assessment id.
-#' @export
-#'
 #' @examples
 #' data = read_alchemer(survey_ids = c("6726093","7311939"))
+#'
+#' @export
+read_alchemer = function(
+    survey_ids = 7589884,
+    end_date = Sys.Date(),
+    start_date = Sys.Date() - days(14)
+    ){
 
   # survey_ids = "7457171" # Ohio
   # survey_ids = "7564298" # NY

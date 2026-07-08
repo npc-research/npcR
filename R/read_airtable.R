@@ -1,18 +1,17 @@
-read_airtable = function(table,base = "Assessment Tracker"){
   #' Function for reading in Air Table tables
   #'
   #' @param base A class of "string" that is the AirTable Base with my table located in it.
   #' @param table A class of "string" that is the name of table I am interested in reading in.
   #'
   #' @return AirTable table
-  #' @export
-  #'
   #' @examples
   #'
   #'
   #' assessments = read_airtable(table = "Assessments",base = "Assessment Tracker")
   #' courts = read_airtable(table = "Courts",base = "Assessment Tracker")
   #' survey_responses = read_airtable(table = "Survey Responses",base = "Assessment Tracker")
+  #' @export
+read_airtable = function(table,base = "Assessment Tracker"){
 
   # base = "Assessment Tracker" # Assessment Tracker
   # table = "Courts"

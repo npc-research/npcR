@@ -20,8 +20,6 @@
 #'
 #' @export
 set_difff = function(x,y){
-#' Function to find differences in two sets along with intersection
-#'
 
 in_x_and_not_y = setdiff(x,y)
 in_y_and_not_x = setdiff(y,x)

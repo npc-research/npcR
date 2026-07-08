@@ -25,4 +25,5 @@ Reading Alchemer Data
 }
 \examples{
 data = read_alchemer(survey_ids = c("6726093","7311939"))
+
 }

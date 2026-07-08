@@ -10,7 +10,7 @@ get_age_census_data(
   counties = NULL,
   census_year = NULL,
   table_number = "B01001",
-  table_letter = "A",
+  table_letter,
   age_bins = NULL
 )
 }

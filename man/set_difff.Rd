@@ -2,10 +2,30 @@
 % Please edit documentation in R/set_difff.R
 \name{set_difff}
 \alias{set_difff}
-\title{Function to find differences in two sets along with intersection}
+\title{Compare two sets and report differences and intersection}
 \usage{
 set_difff(x, y)
 }
+\arguments{
+\item{x}{A vector or set-like object.}
+
+\item{y}{A vector or set-like object.}
+}
+\value{
+Invisibly returns a list with the following components:
+\describe{
+\item{in_x_and_not_y}{Elements present in \code{x} but not in \code{y}.}
+\item{in_y_and_not_x}{Elements present in \code{y} but not in \code{x}.}
+\item{xy_intersection}{Elements common to both \code{x} and \code{y}.}
+\item{symmetric_diff}{Elements in either \code{x} or \code{y} but not both.}
+}
+}
 \description{
-Function to find differences in two sets along with intersection
+Computes the elements that are in \code{x} but not \code{y}, in \code{y} but not \code{x},
+their intersection, and their symmetric difference. The function prints
+summary counts and the corresponding elements.
+}
+\examples{
+set_difff(1:5, 4:8)
+
 }

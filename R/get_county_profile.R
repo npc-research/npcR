@@ -134,6 +134,7 @@ get_county_profile <- function(state_code, geography_type = "county",census_year
         ),
         # NOTE urban/rural data is from get_decennial data
         year = latest_acs_year(frequency = "decennial"),
+        state = state_code,
         sumfile = "dhc"
       ) %>%
         pivot_wider(names_from = variable, values_from = value) %>%

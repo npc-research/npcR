@@ -19,43 +19,28 @@ update_airtable_records = function(data,fields,key,table,base = "Assessment Trac
   #'
   #' @examples
   #'
-  #'create_airtable_rows(
-  #'  data = df,
-  #'  table = "Contact List",
-  #'  base = "Assessment Tracker",
-  #'  single_select_fields = character(),
-  #'  link_fields = character(),
-  #'  attachment_fields = character()
-  #'  )
+  #'
+  #' update_airtable_records(
+  #' data = tibble(
+  #'   "Resource Name" = str_c("Resource ",LETTERS),
+  #'   "HTTP Error" = c(rep("404 Page does not exist",3),rep("",23)),
+  #'   Notes = c("","Hello world!",rep("",24)),
+  #'   File = c(
+  #'     "https://raw.githack.com/npc-research/npcR/master/inst/templates/1.pdf",
+  #'     "https://raw.githack.com/npc-research/npcR/master/inst/templates/2.pdf",
+  #'     "","",rep("",22))) %>%
+  #'   filter(str_detect("Resource Name",str_c(str_c("Resource ",LETTERS[1:7]),collapse = "|"))),
+  #' fields = c("HTTP Error","Notes","File"),
+  #' key = "Resource Name",
+  #' table = "Table 5",
+  #' base = "Zapier Test",
+  #' single_select_fields = character(),
+  #' link_fields = character(),
+  #' attachment_fields = c("File")
+  #' )
 
-  # data = data.frame(
-  #   character_name = c("Cruella","Jasper","Horace"),
-  #   name = c("Emma","Joel","Paul")
-  #   # name = c("Emma Stone","Joel Fry","Paul Walter")
-  # )
-  # data = tibble(
-  #   `Resource Name` = str_c("Resource ",LETTERS),
-  #   `HTTP Error` = c(
-  #     rep("404 Page does not exist",3),
-  #     rep("",23)
-  #   ),
-  #   Notes = c(
-  #     # "test",
-  #     "new notes from 11/4",
-  #     rep("",25)
-  #   )
-  # ) %>%
-  #   filter(str_detect(`Resource Name`,str_c(str_c("Resource ",LETTERS[1:7]),collapse = "|")))
-  # table = "Table 5"
-  # base = "Zapier Test"
-  # key = "Resource Name"
-  # # key = "id"
-  # fields = c("HTTP Error","Notes")
-  # # key = "character_name"
-  # single_select_fields = character()
-  # link_fields = c("Resource Link")
-  # attachment_fields = c("Report","Assessment PDF")
-  # attachment_fields = c("File")
+
+
 
   if (Sys.getenv("at_pa_tkn")=="") {
     stop("API key not found. Make sure you have your API key in a hidden variable named `at_pa_tkn` by running Sys.setenv(at_pa_tkn ='your_api_key_here').")
@@ -82,8 +67,57 @@ update_airtable_records = function(data,fields,key,table,base = "Assessment Trac
           !!flag_col := !is.na(.data[[airtable_col]]) &
                         !is.na(.data[[upload_col]]) &
                         .data[[airtable_col]] != .data[[upload_col]]
-          # TODO update this to factor for attachments
           )
+    }
+
+    return(df)
+  }
+
+  add_overwrite_flags <- function(df, fields, attachment_fields = character()) {
+
+    get_attachment_name <- function(x) {
+      if (is.null(x) || nrow(x) == 0) {
+        return(NA_character_)
+      }
+
+      x$filename[1]
+    }
+
+    for (field in fields) {
+
+      airtable_col <- paste0(field, ".airtable")
+      upload_col   <- paste0(field, ".upload_data")
+      flag_col     <- paste0("overwrite_", field)
+
+      if (field %in% attachment_fields) {
+
+        airtable_filenames <- purrr::map_chr(
+          df[[airtable_col]],
+          get_attachment_name
+        )
+
+        upload_filenames <- df[[upload_col]] %>%
+          basename() %>%
+          tools::file_path_sans_ext() %>%
+          if_else(.=="",NA,.)
+
+        df[[flag_col]] <-
+         (!is.na(airtable_filenames) &
+          !is.na(upload_filenames) &
+          airtable_filenames != upload_filenames)|
+
+        # df[[flag_col]] <-
+         (is.na(upload_filenames) &
+          airtable_filenames != upload_filenames)
+
+      } else {
+
+        df[[flag_col]] <-
+          !is.na(df[[airtable_col]]) &
+          !is.na(df[[upload_col]]) &
+          df[[airtable_col]] != df[[upload_col]]
+
+      }
     }
 
     return(df)
@@ -99,6 +133,8 @@ update_airtable_records = function(data,fields,key,table,base = "Assessment Trac
       confirm_col <- paste0("overwrite_", field, "_confirmed")
       df[[confirm_col]] <- FALSE
     }
+
+    # TODO make sure to specify when attachment_fields need to/don't need to be in fields argument
 
     for (i in seq_len(nrow(df))) {
 
@@ -133,20 +169,20 @@ update_airtable_records = function(data,fields,key,table,base = "Assessment Trac
 
           if (field %in% attachment_fields) {
 
-            cli::cli_text(
-              paste0(
-                "Old: {.href ",
-                "", file_url, "}\n"
-              )
-            )
+            new_file_url = df[[paste0(field, ".upload_data")]][i]
+            new_file_name = basename(df[[paste0(field, ".upload_data")]][i])
 
-            cli::cli_text(
-              paste0(
-                "New: {.url ",
-                df[[paste0(field, ".upload_data")]][i],
-                "}\n"
-              )
-            )
+            cli::cli_text(paste0("Old: {file_name} - Click {.href [here]({file_url})} to view file.\n"))
+            cli::cli_text(paste0("New: {new_file_name} - Click {.href [here]({new_file_url})} to view file.\n"))
+            cli::cli_text(paste0("{.url {new_file_url}}\n"))
+
+            # cli::cli_text(
+            #   paste0(
+            #     "New: {.url ",
+            #     df[[paste0(field, ".upload_data")]][i],
+            #     "}\n"
+            #   )
+            # )
 
           } else {
 
@@ -174,6 +210,10 @@ update_airtable_records = function(data,fields,key,table,base = "Assessment Trac
     df
   }
 
+  df_all = df_all %>%
+    add_overwrite_flags(fields, attachment_fields = attachment_fields) %>%
+    confirm_overwrite(fields)
+
   finalize_overwrites <- function(df, fields) {
     # For each field, keep rows where:
     #  - overwrite not needed, OR
@@ -192,10 +232,6 @@ update_airtable_records = function(data,fields,key,table,base = "Assessment Trac
     df %>%
       select(any_of(select_cols))
   }
-
-  df_all = df_all %>%
-    add_overwrite_flags(fields) %>%
-    confirm_overwrite(fields)
 
   # TODO add a safe guard here like press esc or enter stop to prevent changes from occurring
   data <- finalize_overwrites(df_all, fields)

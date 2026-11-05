@@ -18,8 +18,6 @@ update_airtable_records = function(data,fields,key,table,base = "Assessment Trac
   #' @export
   #'
   #' @examples
-  #'
-  #'
   #' update_airtable_records(
   #' data = tibble(
   #'   "Resource Name" = str_c("Resource ",LETTERS),
@@ -29,7 +27,7 @@ update_airtable_records = function(data,fields,key,table,base = "Assessment Trac
   #'     "https://raw.githack.com/npc-research/npcR/master/inst/templates/1.pdf",
   #'     "https://raw.githack.com/npc-research/npcR/master/inst/templates/2.pdf",
   #'     "","",rep("",22))) %>%
-  #'   filter(str_detect("Resource Name",str_c(str_c("Resource ",LETTERS[1:7]),collapse = "|"))),
+  #'   filter(str_detect(`Resource Name`,str_c(str_c("Resource ",LETTERS[1:7]),collapse = "|"))),
   #' fields = c("HTTP Error","Notes","File"),
   #' key = "Resource Name",
   #' table = "Table 5",

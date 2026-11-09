@@ -4,7 +4,7 @@
 \alias{population_pyramid_plot}
 \title{Create a population pyramid plot}
 \usage{
-population_pyramid_plot(geo_name, pyramid_df, size_mult = 1)
+population_pyramid_plot(geo_name, pyramid_df, labels_on = TRUE, size_mult = 1)
 }
 \arguments{
 \item{geo_name}{Character string identifying the geography to plot.

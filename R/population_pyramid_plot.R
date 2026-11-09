@@ -50,7 +50,7 @@
 #' }
 #'
 #' @export
-population_pyramid_plot = function(geo_name, pyramid_df, size_mult = 1){
+population_pyramid_plot = function(geo_name, pyramid_df, labels_on = TRUE, size_mult = 1){
 
   age_bin_xwalk = data.frame(
     age_bins =
@@ -132,10 +132,11 @@ population_pyramid_plot = function(geo_name, pyramid_df, size_mult = 1){
       gender_hjust = 0.3
     }
 
-    ggplot(plot_data, aes(x = value, y = age_bin)) +
-      geom_col(fill = gender_color, width = 0.7) +
-      # geom_text(label = age_bins) +
-      annotate(
+    p = ggplot(plot_data, aes(x = value, y = age_bin)) +
+      geom_col(fill = gender_color, width = 0.7)
+
+    if(labels_on == TRUE){
+      p = p + annotate(
         geom = "label",
         x = reverse_value * population_pyramid_limit * 0.6,
         y = 15-1.5,
@@ -149,7 +150,10 @@ population_pyramid_plot = function(geo_name, pyramid_df, size_mult = 1){
         label.padding = unit(0.35, "lines"),
         hjust = gender_hjust,
         vjust = 0.5
-      ) +
+      )
+    }
+    p = p +
+      # geom_text(label = age_bins) +
       scale_x_continuous(
         limits = x_limits,
         breaks = pretty(x_limits, n = 3),
@@ -164,6 +168,7 @@ population_pyramid_plot = function(geo_name, pyramid_df, size_mult = 1){
       ) +
       pyramid_theme
 
+    return(p)
   }
 
   # combine plots
